@@ -12,6 +12,7 @@ const Jugador = connection.define('Jugador', {
         type: DataTypes.INTEGER,
         allowNull: true,
         unique: true,
+        field: "id_persona",
         references: {
             model: {
                 tableName: 'persona',

@@ -18,7 +18,14 @@ const listarMultasJugador = async (id) => {
     });
 }
 
+// BUSCAR JUGADOR POR ID
+const buscarJugadorPorId = async (id) => {
+    return await Jugador.findByPk(id);
+};
+
 export default {
     listarJugadores,
-    listarMultasJugador
+    listarMultasJugador,
+    buscarJugadorPorId
+
 }

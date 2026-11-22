@@ -9,12 +9,12 @@ import MultasJugador from "./multasJugador.model.js";
 // =====================================
 
 Persona.hasOne(Jugador, {
-    foreignKey: "id_persona",
+    foreignKey: "idPersona",
     as: "jugador"
 });
 
 Jugador.belongsTo(Persona, {
-    foreignKey: "id_persona",
+    foreignKey: "idPersona",
     as: "persona"
 });
 
@@ -23,12 +23,12 @@ Jugador.belongsTo(Persona, {
 // =====================================
 
 Jugador.hasMany(MultasJugador, {
-    foreignKey: "id_jugador",
+    foreignKey: "idJugador",
     as: "multas"
 });
 
 MultasJugador.belongsTo(Jugador, {
-    foreignKey: "id_jugador",
+    foreignKey: "idJugador",
     as: "jugador"
 });
 
@@ -37,12 +37,12 @@ MultasJugador.belongsTo(Jugador, {
 // =====================================
 
 TiposMultas.hasMany(MultasJugador, {
-    foreignKey: "id_tipomulta",
+    foreignKey: "idTipoMulta",
     as: "multas"
 });
 
 MultasJugador.belongsTo(TiposMultas, {
-    foreignKey: "id_tipomulta",
+    foreignKey: "idTipoMulta",
     as: "tipoMulta"
 });
 
@@ -51,12 +51,12 @@ MultasJugador.belongsTo(TiposMultas, {
 // =====================================
 
 Temporada.hasMany(MultasJugador, {
-    foreignKey: "id_temporada",
+    foreignKey: "idTemporada",
     as: "multas"
 });
 
 MultasJugador.belongsTo(Temporada, {
-    foreignKey: "id_temporada",
+    foreignKey: "idTemporada",
     as: "temporada"
 });
 
