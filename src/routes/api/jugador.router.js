@@ -11,4 +11,13 @@ router.get("/:id/multas", jugadorApiController.listarMultasJugador);
 // GET: Consultar jugador
 router.get("/:id", jugadorApiController.buscarJugadorPorId);
 
+// POST: Crear jugador
+router.post("/", jugadorApiController.crearJugador);
+
+// PATCH: Activar / desactivar jugador
+router.patch("/:id/estado", jugadorApiController.cambiarEstadoJugador);
+
+// PUT: Modificar jugador
+router.put("/:id", jugadorApiController.modificarJugador);
+
 export default router;
