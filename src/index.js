@@ -22,7 +22,7 @@ app.use(express.static("public"));
 app.set("views", "./src/views");
 app.set("view engine", "ejs");
 
-// app.use("/", router);
+ app.use("/", router);
 
 async function startServer(params) {
     const maxAttempts = 5;
