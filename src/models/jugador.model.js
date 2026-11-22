@@ -40,6 +40,11 @@ const Jugador = connection.define('Jugador', {
     fechaAlta: {
         type: DataTypes.DATEONLY,
         allowNull: true
+    },
+    activo: {
+        type: DataTypes.BOOLEAN,
+        allowNull: true,
+        defaultValue: true
     }
 }, {
     tableName: 'jugador',
