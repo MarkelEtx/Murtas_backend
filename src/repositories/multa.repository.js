@@ -1,0 +1,102 @@
+import { MultasJugador, TiposMultas } from "../models/index.js"
+
+// LISTAR TODAS LAS MULTAS
+const listarMultas = async () => {
+    return await MultasJugador.findAll({
+        include: [{
+            model: TiposMultas,
+            as:"tipoMulta",
+            attributes:["nombre", "descripcion"]
+        }],
+        order: [["id", "DESC"]]
+    });
+};
+
+// BUSCAR JUGADOR POR ID
+const buscarMultaPorId = async (id) => {
+    return await MultasJugador.findByPk(id,{
+        include: [{
+            model: TiposMultas,
+            as:"tipoMulta",
+            attributes:["nombre", "descripcion"]
+        }],
+    });
+};
+
+// CREAR MULTA
+const crearMulta = async (datos) => {
+    return await MultasJugador.create({
+        id_jugador: datos.id_jugador,
+        id_tipomulta: datos.id_tipo_multa,
+        id_temporada: datos.id_temporada,
+        fecha_multa: datos.fecha,
+        importe: datos.importe,
+        observaciones: datos.observacion,
+        pagada: false,
+        activa: true
+    });
+};
+
+
+// MODIFICAR MULTA
+const modificarMulta = async (id, datos) => {
+    const multa = await MultasJugador.findByPk(id);
+
+    if (!multa) return null;
+
+    const camposPermitidos = [
+        "id_jugador",
+        "id_tipo_multa",
+        "id_temporada",
+        "fecha",
+        "importe",
+        "observacion"
+    ];
+
+    const datosActualizados = {};
+
+    camposPermitidos.forEach(campo => {
+        if (datos[campo] !== undefined) {
+            datosActualizados[campo] = datos[campo];
+        }
+    });
+
+    await multa.update(datosActualizados);
+
+    return multa;
+};
+
+// REGISTRAR PAGO DE MULTA
+const pagarMulta = async (id) => {
+    const multa = await MultasJugador.findByPk(id);
+
+    if (!multa) return null;
+
+    await multa.update({
+        pagada: true
+    });
+
+    return multa;
+};
+
+// ANULAR MULTA
+const anularMulta = async (id) => {
+    const multa = await MultasJugador.findByPk(id);
+
+    if (!multa) return null;
+
+    await multa.update({
+        activa: false
+    });
+
+    return multa;
+};
+
+export default {
+    listarMultas,
+    buscarMultaPorId,
+    crearMulta,
+    modificarMulta,
+    pagarMulta,
+    anularMulta
+}
