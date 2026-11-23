@@ -6,18 +6,6 @@ const listarJugadores = async () => {
     });
 };
 
-const listarMultasJugador = async (id) => {
-    const jugador = await Jugador.findByPk(id);
-    if (!jugador) return null;
-
-    return await MultasJugador.findAll({
-        where: {
-            id_jugador: id
-        },
-        order: [["id", "DESC"]]
-    });
-}
-
 // BUSCAR JUGADOR POR ID
 const buscarJugadorPorId = async (id) => {
     return await Jugador.findByPk(id);
@@ -31,7 +19,7 @@ const crearJugador = async (datos) => {
         capitan: datos.capitan ?? false,
         posicion: datos.posicion,
         dorsal: datos.dorsal,
-        fecha_alta: datos.fecha_alta || null,
+        fechaAlta: datos.fechaAlta || null,
         activo: true
     });
 };
@@ -57,12 +45,12 @@ const modificarJugador = async (id, datos) => {
     if (!jugador) return null;
 
     const camposPermitidos = [
-        "id_persona",
+        "idPersona",
         "nombre",
         "capitan",
         "posicion",
         "dorsal",
-        "fecha_alta"
+        "fechaAlta"
     ];
 
     const datosActualizados = {};
@@ -72,7 +60,6 @@ const modificarJugador = async (id, datos) => {
             datosActualizados[campo] = datos[campo];
         }
     });
-
     await jugador.update(datosActualizados);
 
     return jugador;
@@ -80,7 +67,6 @@ const modificarJugador = async (id, datos) => {
 
 export default {
     listarJugadores,
-    listarMultasJugador,
     buscarJugadorPorId,
     crearJugador,
     cambiarEstadoJugador,

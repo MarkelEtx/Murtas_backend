@@ -20,7 +20,6 @@ router.patch("/:id/pagar", multaApiController.pagarMulta);
 // PATCH: Anular multa
 router.patch("/:id/anular", multaApiController.anularMulta);
 
-
 // FILTRAR TIPOS DE MULTAS
 router.get("/filtrar", multaApiController.obtenerMultasFiltradas);
 

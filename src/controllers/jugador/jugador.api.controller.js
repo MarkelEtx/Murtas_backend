@@ -22,40 +22,6 @@ const listarJugadores = async (req, res) => {
 };
 
 
-const listarMultasJugador = async (req, res) => {
-    try {
-        const { id } = req.params;
-        if (!Number.isInteger(Number(id)) || Number(id) <= 0) {
-            return res.status(400).json({
-                ok: false,
-                message: "ID de jugador no válido"
-            })
-        }
-        const multas = await jugadorRepository.listarMultasJugador(id);
-
-        if (multas === null) {
-            return res.status(404).json({
-                ok: false,
-                message: "Jugador no encontrado"
-            });
-        }
-
-        return res.status(200).json({
-            ok: true,
-            data: multas
-        });
-
-    } catch (error) {
-        console.error("Error al consultar multas:", error);
-
-        return res.status(500).json({
-            ok: false,
-            message: "Error al obtener las multas del jugador"
-        });
-
-    }
-}
-
 const buscarJugadorPorId = async (req, res) => {
     try {
         const { id } = req.params;
@@ -93,7 +59,7 @@ const buscarJugadorPorId = async (req, res) => {
 
 const crearJugador = async (req, res) => {
     try {
-        const { id_persona, nombre, capitan, posicion, dorsal, fecha_alta } = req.body;
+        const { id_persona, nombre, capitan, posicion, dorsal, fechaAlta } = req.body;
 
         if (
             !nombre ||
@@ -112,7 +78,7 @@ const crearJugador = async (req, res) => {
             capitan,
             posicion,
             dorsal,
-            fecha_alta
+            fechaAlta
         });
 
         return res.status(201).json({
@@ -208,12 +174,11 @@ const modificarJugador = async (req, res) => {
                 mensaje: "ID de jugador no válido"
             });
         }
-
         const jugador = await jugadorRepository.modificarJugador(
             id,
             req.body
         );
-
+        
         if (!jugador) {
             return res.status(404).json({
                 ok: false,
@@ -239,7 +204,6 @@ const modificarJugador = async (req, res) => {
 
 export default {
     listarJugadores,
-    listarMultasJugador,
     buscarJugadorPorId,
     crearJugador,
     cambiarEstadoJugador,

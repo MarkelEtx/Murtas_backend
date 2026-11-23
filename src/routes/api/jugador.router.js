@@ -17,8 +17,5 @@ router.put("/:id", jugadorApiController.modificarJugador);
 // PATCH: Activar / desactivar jugador
 router.patch("/:id/estado", jugadorApiController.cambiarEstadoJugador);
 
-// GET: Consultar multas de un jugador
-router.get("/:id/multas", jugadorApiController.listarMultasJugador);
-
 
 export default router;
