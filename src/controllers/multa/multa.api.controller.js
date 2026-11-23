@@ -283,11 +283,63 @@ const anularMulta = async (req, res) => {
     }
 };
 
+// OBTENER MULTAS
+const obtenerMultasFiltradas = async (req, res) => {
+    try {
+        const { id_temporada, id_jugador } = req.query;
+
+        if (
+            id_temporada !== undefined &&
+            (!Number.isInteger(Number(id_temporada)) || Number(id_temporada) <= 0)
+        ) {
+            return res.status(400).json({
+                ok: false,
+                message: "El identificador de temporada no es válido"
+            });
+        }
+
+        if (
+            id_jugador !== undefined &&
+            (!Number.isInteger(Number(id_jugador)) || Number(id_jugador) <= 0)
+        ) {
+            return res.status(400).json({
+                ok: false,
+                message: "El identificador del jugador no es válido"
+            });
+        }
+
+        const filtros = {};
+
+        if (id_temporada !== undefined) {
+            filtros.id_temporada = Number(id_temporada);
+        }
+
+        if (id_jugador !== undefined) {
+            filtros.id_jugador = Number(id_jugador);
+        }
+
+        const multas = await multaRepository.obtenerMultasFiltradas(filtros);
+
+        return res.status(200).json({
+            ok: true,
+            data: multas
+        });
+
+    } catch (error) {
+        return res.status(500).json({
+            ok: false,
+            message: "Error al obtener las multas",
+            error: error.message
+        });
+    }
+};
+
 export default {
     listarMultas,
     buscarMultaPorId,
     crearMulta,
     modificarMulta,
     pagarMulta,
-    anularMulta
+    anularMulta,
+    obtenerMultasFiltradas
 }

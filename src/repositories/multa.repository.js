@@ -92,11 +92,32 @@ const anularMulta = async (id) => {
     return multa;
 };
 
+// OBTENER MULTAS CON FILTROS
+const obtenerMultasFiltradas = async (filtros = {}) => {
+
+    const where = {
+        activa: true
+    };
+
+    if (filtros.id_temporada !== undefined) {
+        where.id_temporada = filtros.id_temporada;
+    }
+
+    if (filtros.id_jugador !== undefined) {
+        where.id_jugador = filtros.id_jugador;
+    }
+
+    return await MultasJugador.findAll({
+         where: where
+    });
+}
+
 export default {
     listarMultas,
     buscarMultaPorId,
     crearMulta,
     modificarMulta,
     pagarMulta,
-    anularMulta
+    anularMulta,
+    obtenerMultasFiltradas
 }
