@@ -175,19 +175,31 @@ const anularTipoMulta = async (req, res) => {
             });
         }
 
-        const tipoMulta = await tipoMultaRepository.anularTipoMulta(id);
+        // BUSCAR TIPO DE MULTA
+        const tipoMulta = await tipoMultaRepository.buscarTipoMultaPorId(id);
 
         if (!tipoMulta) {
             return res.status(404).json({
                 ok: false,
-                mensaje: "Tipo de multa no encontrada"
+                mensaje: "Tipo de multa no encontrado"
             });
         }
 
+        // COMPROBAR SI YA ESTÁ ANULADO
+        if (!tipoMulta.activa) {
+            return res.status(409).json({
+                ok: false,
+                mensaje: "No se puede anular un tipo de multa ya anulado"
+            });
+        }
+
+        // ANULAR TIPO DE MULTA
+        const tipoMultaAnulado = await tipoMultaRepository.anularTipoMulta(id);
+
         return res.status(200).json({
             ok: true,
-            mensaje: "Tipo de multa anulada correctamente",
-            data: tipoMulta
+            mensaje: "Tipo de multa anulado correctamente",
+            data: tipoMultaAnulado
         });
 
     } catch (error) {

@@ -28,11 +28,23 @@ const modificarTipoMulta = async (id, datos) => {
 
     if (!tipoMulta) return null;
 
-    return await tipoMulta.update({
-        nombre: datos.nombre ?? tipoMulta.nombre,
-        descripcion: datos.descripcion ?? tipoMulta.descripcion,
-        importeBase: datos.importeBase ?? tipoMulta.importeBase
+    const camposPermitidos = [
+        "nombre",
+        "descripcion",
+        "importeBase"
+    ];
+
+    const datosActualizados = {};
+
+    camposPermitidos.forEach(campo => {
+        if (datos[campo] !== undefined) {
+            datosActualizados[campo] = datos[campo];
+        }
     });
+
+    await tipoMulta.update(datosActualizados);
+
+    return tipoMulta;
 };
 
 // ANULAR TIPO DE MULTA
@@ -47,9 +59,9 @@ const anularTipoMulta = async (id) => {
 };
 
 export default {
-listarTiposMultas,
-buscarTipoMultaPorId,
-crearTipoMulta,
-modificarTipoMulta,
-anularTipoMulta
+    listarTiposMultas,
+    buscarTipoMultaPorId,
+    crearTipoMulta,
+    modificarTipoMulta,
+    anularTipoMulta
 }
