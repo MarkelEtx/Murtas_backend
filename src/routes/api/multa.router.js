@@ -5,6 +5,9 @@ const router = Router();
 // GET: Listar todas las multas
 router.get("/", multaApiController.listarMultas);
 
+// FILTRAR TIPOS DE MULTAS
+router.get("/filtrar", multaApiController.obtenerMultasFiltradas);
+
 // GET: Consultar una multa
 router.get("/:id", multaApiController.buscarMultaPorId);
 
@@ -20,7 +23,6 @@ router.patch("/:id/pagar", multaApiController.pagarMulta);
 // PATCH: Anular multa
 router.patch("/:id/anular", multaApiController.anularMulta);
 
-// FILTRAR TIPOS DE MULTAS
-router.get("/filtrar", multaApiController.obtenerMultasFiltradas);
+
 
 export default router;

@@ -61,20 +61,20 @@ const buscarMultaPorId = async (req, res) => {
 const crearMulta = async (req, res) => {
     try {
         const {
-            id_jugador,
-            id_tipo_multa,
-            id_temporada,
-            fecha,
-            valor,
+            idJugador,
+            idTipoMulta,
+            idTemporada,
+            fechaMulta,
+            importe,
             observacion
         } = req.body;
 
         // VALIDAR IDS
         if (
-            !Number.isInteger(Number(id_jugador)) ||
-            Number(id_jugador) <= 0 ||
-            !Number.isInteger(Number(id_tipo_multa)) ||
-            Number(id_tipo_multa) <= 0
+            !Number.isInteger(Number(idJugador)) ||
+            Number(idJugador) <= 0 ||
+            !Number.isInteger(Number(idTipoMulta)) ||
+            Number(idTipoMulta) <= 0
         ) {
             return res.status(400).json({
                 ok: false,
@@ -82,27 +82,27 @@ const crearMulta = async (req, res) => {
             });
         }
 
-        // VALIDAR VALOR
+        // VALIDAR IMPORTE
         if (
-            valor === undefined ||
-            valor === null ||
-            valor === "" ||
-            !Number.isFinite(Number(valor)) ||
-            Number(valor) < 0
+            importe === undefined ||
+            importe === null ||
+            importe === "" ||
+            !Number.isFinite(Number(importe)) ||
+            Number(importe) < 0
         ) {
             return res.status(400).json({
                 ok: false,
-                mensaje: "El valor de la multa debe ser un número válido y no negativo"
+                mensaje: "El importe de la multa debe ser un número válido y no negativo"
             });
         }
-
+        
         const multa = await multaRepository.crearMulta({
-            id_jugador,
-            id_tipo_multa,
-            id_temporada,
-            fecha,
+            idJugador,
+            idTipoMulta,
+            idTemporada,
+            fechaMulta,
             importe,
-            observacion
+            observaciones
         });
 
         if (!multa) {
@@ -206,13 +206,6 @@ const pagarMulta = async (req, res) => {
                 mensaje: "No se puede pagar una multa anulada"
             });
         }
-        
-        if (multa.pagada) {
-            return res.status(409).json({
-                ok: false,
-                mensaje: "No se puede pagar una multa ya pagada"
-            });
-        }
 
         return res.status(200).json({
             ok: true,
@@ -285,12 +278,13 @@ const anularMulta = async (req, res) => {
 
 // OBTENER MULTAS
 const obtenerMultasFiltradas = async (req, res) => {
+    
     try {
-        const { id_temporada, id_jugador } = req.query;
+        const { idTemporada, idJugador } = req.query;
 
         if (
-            id_temporada !== undefined &&
-            (!Number.isInteger(Number(id_temporada)) || Number(id_temporada) <= 0)
+            idTemporada !== undefined &&
+            (!Number.isInteger(Number(idTemporada)) || Number(idTemporada) <= 0)
         ) {
             return res.status(400).json({
                 ok: false,
@@ -299,8 +293,8 @@ const obtenerMultasFiltradas = async (req, res) => {
         }
 
         if (
-            id_jugador !== undefined &&
-            (!Number.isInteger(Number(id_jugador)) || Number(id_jugador) <= 0)
+            idJugador !== undefined &&
+            (!Number.isInteger(Number(idJugador)) || Number(idJugador) <= 0)
         ) {
             return res.status(400).json({
                 ok: false,
@@ -310,12 +304,12 @@ const obtenerMultasFiltradas = async (req, res) => {
 
         const filtros = {};
 
-        if (id_temporada !== undefined) {
-            filtros.id_temporada = Number(id_temporada);
+        if (idTemporada !== undefined) {
+            filtros.idTemporada = Number(idTemporada);
         }
 
-        if (id_jugador !== undefined) {
-            filtros.id_jugador = Number(id_jugador);
+        if (idJugador !== undefined) {
+            filtros.idJugador = Number(idJugador);
         }
 
         const multas = await multaRepository.obtenerMultasFiltradas(filtros);

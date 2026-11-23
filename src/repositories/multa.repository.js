@@ -8,7 +8,7 @@ const listarMultas = async () => {
             as:"tipoMulta",
             attributes:["nombre", "descripcion"]
         }],
-        order: [["id", "DESC"]]
+        order: [["id", "ASC"]]
     });
 };
 
@@ -26,10 +26,10 @@ const buscarMultaPorId = async (id) => {
 // CREAR MULTA
 const crearMulta = async (datos) => {
     return await MultasJugador.create({
-        id_jugador: datos.id_jugador,
-        id_tipomulta: datos.id_tipo_multa,
-        id_temporada: datos.id_temporada,
-        fecha_multa: datos.fecha,
+        idJugador: datos.idJugador,
+        idTipoMulta: datos.idTipoMulta,
+        idTemporada: datos.idTemporada,
+        fechaMulta: datos.fechaMulta,
         importe: datos.importe,
         observaciones: datos.observacion,
         pagada: false,
@@ -45,12 +45,12 @@ const modificarMulta = async (id, datos) => {
     if (!multa) return null;
 
     const camposPermitidos = [
-        "id_jugador",
-        "id_tipo_multa",
-        "id_temporada",
-        "fecha",
+        "idJugador",
+        "idTipoMulta",
+        "idTemporada",
+        "fechaMulta",
         "importe",
-        "observacion"
+        "observaciones"
     ];
 
     const datosActualizados = {};
@@ -99,12 +99,12 @@ const obtenerMultasFiltradas = async (filtros = {}) => {
         activa: true
     };
 
-    if (filtros.id_temporada !== undefined) {
-        where.id_temporada = filtros.id_temporada;
+    if (filtros.idTemporada !== undefined) {
+        where.idTemporada = filtros.idTemporada;
     }
 
-    if (filtros.id_jugador !== undefined) {
-        where.id_jugador = filtros.id_jugador;
+    if (filtros.idJugador !== undefined) {
+        where.idJugador = filtros.idJugador;
     }
 
     return await MultasJugador.findAll({
