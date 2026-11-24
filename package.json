@@ -8,9 +8,13 @@
   },
   "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon src/index.js",
     "start": "node src/index.js",
-    "dev": "nodemon src/index.js"
+    "test": "vitest",
+    "test:run": "vitest run",
+    "test:coverage": "vitest run --coverage",
+    "docs": "jsdoc -c jsdoc.json"
+    
   },
   "repository": {
     "type": "git",
@@ -27,15 +31,20 @@
     "bcrypt": "^6.0.0",
     "cors": "^2.8.6",
     "dotenv": "^18.0.10",
-    "ejs": "^7.0.2",
     "express": "^5.3.0",
-    "express-session": "^1.19.0",
     "jsonwebtoken": "^9.0.3",
     "pg": "^8.23.1",
     "pg-hstore": "^2.3.4",
-    "sequelize": "^6.37.8"
+    "sequelize": "^6.37.8",
+    "cookie-parser": "^1.4.7",
+    "mongoose": "^9.12.3",
+    "swagger-jsdoc": "^6.3.0",
+    "swagger-ui-express": "^5.0.1"
   },
   "devDependencies": {
-    "nodemon": "^3.1.14"
+    "nodemon": "^3.1.14",
+    "@vitest/coverage-v8": "^2.1.9",
+    "jsdoc": "^4.0.5",
+    "vitest": "^2.1.9"
   }
 }

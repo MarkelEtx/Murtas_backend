@@ -10,7 +10,10 @@ services:
       - .:/app
       - /app/node_modules
     depends_on:
-      - postgres
+      postgres:
+        condition: service_started
+      mongo:
+        condition: service_healthy # no arranca la API hasta que Mongo responde
 
   postgres:
     image: postgres:18
@@ -38,6 +41,28 @@ services:
     depends_on:
       - postgres
 
+  mongo:
+    # La API se conecta a Mongo por este nombre (MONGO_HOST)
+    container_name: ${MONGO_HOST}
+    image: mongo:8
+    restart: unless-stopped
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_USER}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD}
+      MONGO_INITDB_DATABASE: ${MONGO_DB}
+    ports:
+      - "${MONGO_PORT}:27017"
+    volumes:
+      # Los scripts .js de esta carpeta se ejecutan solo la primera vez (con el volumen vacío)
+      # - ./database/scripts:/docker-entrypoint-initdb.d:ro
+      - mongo_data:/data/db
+    healthcheck:
+      test: ["CMD", "mongosh", "--quiet", "--eval", "db.adminCommand('ping')"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
 volumes:
   node_modules:
   postgres_data:
+  mongo_data:

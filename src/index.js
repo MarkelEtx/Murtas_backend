@@ -1,28 +1,31 @@
+import { env } from "./config/env.js"; // lo primero: carga y valida el .env (si falta algo, no arranca)
 import express from "express";
-import dotenv from "dotenv";
 import cors from "cors";
 import router from "./routes/router.js";
- import connection from "./config/db.js";
-
-
-dotenv.config();
+import cookieParser from "cookie-parser";
+import connection from "./config/db.js";
+import connectDB from "./config/db_mongo.js";
+// import { swaggerUi, swaggerSpec } from "./config/swagger.js";
+// import { notFound, errorHandler } from "./middlewares/error.middleware.js";
 
 const PORT = 3000;
 
 const app = express();
 
 // Middlewares 
-app.use(cors())
+app.use(cors({ origin: env.FRONTEND_URL, credentials: true }))
 app.use(express.json()) // permite leer el body de los POST en json
-app.use(express.urlencoded({ extends: true })) // permite leer el body de los POST en formularios
+app.use(cookieParser()); // rellena req.cookies
+
+app.use("/", router);
+
+// Documentación interactiva de la API: http://localhost:3000/docs
+// app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 
-app.use(express.static("public"));
-
-app.set("views", "./src/views");
-app.set("view engine", "ejs");
-
- app.use("/", router);
+// Siempre después de las rutas, y en este orden:
+// app.use(notFound); // ninguna ruta ha respondido → 404
+// app.use(errorHandler); // el último: recibe todos los errores
 
 async function startServer(params) {
     const maxAttempts = 5;
@@ -30,6 +33,7 @@ async function startServer(params) {
     while (attempts) {
         try {
             await connection.authenticate();
+            await connectDB();
             console.log("Conexión establecida con la base de datos");
             app.listen(PORT, () => {
                 console.log("Aplicación en marcha")
