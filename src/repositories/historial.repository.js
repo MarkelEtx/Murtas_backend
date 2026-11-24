@@ -13,6 +13,19 @@ const registrarHistorial = async (datos) => {
     });
 };
 
+// LISTAR HISTORIAL
+const listarHistorial = async () => {
+    return await HistorialModel.find().sort({
+        created_at: -1
+    });
+};
+
+// BUSCAR POR ID
+const buscarhistorialPorId = async (id) => {
+  return await HistorialModel.findById(id);
+};
+
 export default{
-    registrarHistorial
+    registrarHistorial,
+    buscarhistorialPorId
 }

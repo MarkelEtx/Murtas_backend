@@ -46,6 +46,12 @@ const historialSchema = new Schema(
       updatedAt: "updated_at",
     },
     collection: "historial",
+    toJSON: {
+      transform: (_doc, ret) => {
+        const { __v, ...historial } = ret;
+        return historial;
+      },
+    },
   },
 );
 
