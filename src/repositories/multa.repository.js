@@ -1,12 +1,12 @@
-import { MultasJugador, TiposMultas } from "../models/index.js"
+import { MultasJugador, TiposMultas, Jugador } from "../models/index.js"
 
 // LISTAR TODAS LAS MULTAS
 const listarMultas = async () => {
     return await MultasJugador.findAll({
         include: [{
             model: TiposMultas,
-            as:"tipoMulta",
-            attributes:["nombre", "descripcion"]
+            as: "tipoMulta",
+            attributes: ["nombre", "descripcion"]
         }],
         order: [["id", "ASC"]]
     });
@@ -14,11 +14,11 @@ const listarMultas = async () => {
 
 // BUSCAR JUGADOR POR ID
 const buscarMultaPorId = async (id) => {
-    return await MultasJugador.findByPk(id,{
+    return await MultasJugador.findByPk(id, {
         include: [{
             model: TiposMultas,
-            as:"tipoMulta",
-            attributes:["nombre", "descripcion"]
+            as: "tipoMulta",
+            attributes: ["nombre", "descripcion"]
         }],
     });
 };
@@ -68,7 +68,15 @@ const modificarMulta = async (id, datos) => {
 
 // REGISTRAR PAGO DE MULTA
 const pagarMulta = async (id) => {
-    const multa = await MultasJugador.findByPk(id);
+    const multa = await MultasJugador.findByPk(id, {
+        include: [
+            {
+                model: Jugador,
+                as: "jugador",
+                attributes: ["nombre"]
+            }
+        ]
+    });
 
     if (!multa) return null;
 
@@ -108,7 +116,7 @@ const obtenerMultasFiltradas = async (filtros = {}) => {
     }
 
     return await MultasJugador.findAll({
-         where: where
+        where: where
     });
 }
 

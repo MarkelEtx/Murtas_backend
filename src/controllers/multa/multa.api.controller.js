@@ -1,4 +1,5 @@
 import multaRepository from "../../repositories/multa.repository.js"
+import historialRepository from "../../repositories/historial.repository.js"
 
 // LISTAR MULTAS
 const listarMultas = async (req, res) => {
@@ -102,7 +103,7 @@ const crearMulta = async (req, res) => {
             idTemporada,
             fechaMulta,
             importe,
-            observaciones
+            observacion
         });
 
         if (!multa) {
@@ -205,7 +206,19 @@ const pagarMulta = async (req, res) => {
                 ok: false,
                 mensaje: "No se puede pagar una multa anulada"
             });
-        }
+        }        
+        // OBTENER NOMBRE DEL JUGADOR
+        const nombreJugador = multa.jugador.nombre;
+        
+        // REGISTRAR HISTORIAL
+        await historialRepository.registrarHistorial({
+            accion: "MODIFICAR",
+            usuario: "Admin",
+            usuarioAfectado: nombreJugador,
+            entidad: "MULTAS_JUGADOR",
+            idEntidad: multa.id,
+            resumen: `Admin ha registrado el pago de una multa de ${multa.importe} € al jugador ${nombreJugador}.`
+        });
 
         return res.status(200).json({
             ok: true,

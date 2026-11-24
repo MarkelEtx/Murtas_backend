@@ -15,14 +15,22 @@ const historialSchema = new Schema(
       trim: true,
     },
 
+    usuarioAfectado: {
+      type: String,
+      required: [true, "El usuario es obligatorio"],
+      alias: "usuario_afectado",
+      trim: true,
+    },
+
     entidad: {
       type: String,
       trim: true,
       uppercase: true,
     },
 
-    id_entidad: {
+    idEntidad: {
       type: String,
+      alias: "id_entidad",
       trim: true,
     },
 
@@ -41,4 +49,5 @@ const historialSchema = new Schema(
   },
 );
 
-export const HistorialModel = model("Historial", historialSchema);
+const HistorialModel = model("Historial", historialSchema);
+export default HistorialModel;

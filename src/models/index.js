@@ -3,6 +3,7 @@ import Jugador from "./jugador.model.js";
 import Temporada from "./temporada.model.js";
 import TiposMultas from "./tipoMultas.model.js";
 import MultasJugador from "./multasJugador.model.js";
+import HistorialModel from "./historial.model.js";
 
 // =====================================
 // RELACIÓN PERSONA - JUGADOR (1:1)
@@ -66,5 +67,6 @@ export {
     Jugador,
     Temporada,
     TiposMultas,
-    MultasJugador
+    MultasJugador,
+    HistorialModel
 };
