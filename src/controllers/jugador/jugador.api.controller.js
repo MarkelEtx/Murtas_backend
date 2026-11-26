@@ -202,10 +202,25 @@ const modificarJugador = async (req, res) => {
     }
 };
 
+// ASOCIAR JUGADOR A PERSONA
+const asociarPersona = async (idJugador, idPersona) => {
+    return await jugadorRepository.update(
+        {
+            idPersona: idPersona
+        },
+        {
+            where: {
+                id: idJugador
+            }
+        }
+    );
+};
+
 export default {
     listarJugadores,
     buscarJugadorPorId,
     crearJugador,
     cambiarEstadoJugador,
-    modificarJugador
+    modificarJugador,
+    asociarPersona
 }
