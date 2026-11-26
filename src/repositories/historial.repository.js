@@ -26,6 +26,7 @@ const buscarhistorialPorId = async (id) => {
 };
 
 export default{
+    listarHistorial,
     registrarHistorial,
     buscarhistorialPorId
 }

@@ -137,7 +137,55 @@ const login = async (req, res) => {
     }
 };
 
+//LOGOUT
+const logout = (req, res) => {
+    try {
+        res.clearCookie("token", TOKEN_COOKIE_OPTIONS);
+
+        return res.status(200).json({
+            ok: true,
+            message: "Sesión cerrada correctamente"
+        });
+
+    } catch (error) {
+        console.error("Error al cerrar sesión:", error);
+
+        return res.status(500).json({
+            ok: false,
+            message: "Error interno al cerrar sesión"
+        });
+    }
+};
+
+const me = async (req, res) => {
+    try {
+        const persona = await authRepository.buscarPorId(req.user.id);
+
+        if (!persona) {
+            return res.status(404).json({
+                ok: false,
+                message: "El usuario ya no existe"
+            });
+        }
+
+        return res.status(200).json({
+            ok: true,
+            data: persona
+        });
+
+    } catch (error) {
+        console.error("Error al obtener el usuario:", error);
+
+        return res.status(500).json({
+            ok: false,
+            message: "Error interno al obtener el usuario"
+        });
+    }
+};
+
 export default {
     register,
-    login
+    login,
+    logout,
+    me
 }

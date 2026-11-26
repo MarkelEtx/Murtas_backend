@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken";
-import env from "../config/env.js";
+import {env} from "../config/env.js";
 
 // COMPROBAR AUTENTICACIÓN
 const isAuthenticated = (req, res, next) => {
