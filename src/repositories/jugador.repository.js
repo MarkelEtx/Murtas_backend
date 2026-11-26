@@ -65,11 +65,19 @@ const modificarJugador = async (id, datos) => {
     return jugador;
 };
 
+//NO TIENE ENDPOINT ES SOLO PARA EL MIDDLEARE
+const buscarPorIdPersona = async (idPersona) => {
+    return await Jugador.findOne({
+        where: { idPersona: idPersona }
+    });
+};
+
 export default {
     listarJugadores,
     buscarJugadorPorId,
     crearJugador,
     cambiarEstadoJugador,
-    modificarJugador
+    modificarJugador,
+    buscarPorIdPersona
 
 }

@@ -34,9 +34,9 @@ async function startServer(params) {
         try {
             await connection.authenticate();
             await connectDB();
-            console.log("Conexión establecida con la base de datos");
+            console.log("✅ Conexión establecida con la base de datos");
             app.listen(PORT, () => {
-                console.log("Aplicación en marcha")
+                console.log("✅ Aplicación en marcha")
             });
             break;
         } catch (error) {
