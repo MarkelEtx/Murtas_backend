@@ -11,9 +11,9 @@ import isAdmin from "../../middlewares/isAdmin.middleware.js";
 const router = Router();
 
 router.use("/jugadores", isAuthenticated, jugadorRouter);
-router.use("/multas",multaRouter);
-router.use("/tiposMultas",tipoMultaRouter);
-router.use("/historial", isAuthenticated, isJugador, isAdmin,historialRouter);
-router.use("/auth",authRouter);
+router.use("/multas", isAuthenticated, isJugador, multaRouter);
+router.use("/tiposMultas", isAuthenticated, isJugador, isAdmin, tipoMultaRouter);
+router.use("/historial", isAuthenticated, isJugador, isAdmin, historialRouter);
+router.use("/auth", authRouter);
 
 export default router;
