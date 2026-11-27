@@ -14,6 +14,6 @@ router.use("/jugadores", isAuthenticated, jugadorRouter);
 router.use("/multas", isAuthenticated, isJugador, multaRouter);
 router.use("/tiposMultas", isAuthenticated, isJugador, isAdmin, tipoMultaRouter);
 router.use("/historial", isAuthenticated, isJugador, isAdmin, historialRouter);
-router.use("/auth", authRouter);
+router.use("/auth", authRouter); //historial login
 
 export default router;

@@ -1,6 +1,8 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import authRepository from "../../repositories/auth.repository.js";
+import jugadorRepository from "../../repositories/jugador.repository.js";
+import historialRepository from "../../repositories/historial.repository.js";
 import { env } from "../../config/env.js";
 
 // import { HttpError } from "../utils/HttpError.js";
@@ -96,6 +98,22 @@ const login = async (req, res) => {
                 message: "Credenciales incorrectas"
             });
         }
+
+        // BUSCAR JUGADOR ASOCIADO
+        const jugador = await jugadorRepository.buscarPorIdPersona(persona.id);
+
+        const nombreUsuario = jugador ? jugador.nombre : persona.nombre;
+        const rolUsuario = jugador?.capitan ? "Admin" : "Jugador";
+
+        // REGISTRAR HISTORIAL
+        await historialRepository.registrarHistorial({
+            accion: "LOGIN",
+            usuario: `${nombreUsuario} (${rolUsuario})`,
+            usuarioAfectado: nombreUsuario,
+            entidad: "PERSONA",
+            idEntidad: persona.id,
+            resumen: `${nombreUsuario} (${rolUsuario}) ha iniciado sesión.`
+        });
 
         // GENERAR PAYLOAD
         const payload = {

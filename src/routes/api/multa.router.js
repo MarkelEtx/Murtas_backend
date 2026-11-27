@@ -20,7 +20,7 @@ router.post("/", isAdmin, multaApiController.crearMulta);
 router.put("/:id", isAdmin, multaApiController.modificarMulta);
 
 // PATCH: Registrar pago
-router.patch("/:id/pagar", multaApiController.pagarMulta);
+router.patch("/:id/pagar", multaApiController.pagarMulta);//historial
 
 // PATCH: Anular multa
 router.patch("/:id/anular", isAdmin, multaApiController.anularMulta);

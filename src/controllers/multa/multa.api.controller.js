@@ -96,7 +96,7 @@ const crearMulta = async (req, res) => {
                 mensaje: "El importe de la multa debe ser un número válido y no negativo"
             });
         }
-        
+
         const multa = await multaRepository.crearMulta({
             idJugador,
             idTipoMulta,
@@ -206,18 +206,21 @@ const pagarMulta = async (req, res) => {
                 ok: false,
                 mensaje: "No se puede pagar una multa anulada"
             });
-        }        
+        }
         // OBTENER NOMBRE DEL JUGADOR
         const nombreJugador = multa.jugador.nombre;
         
+        // DATOS DEL USUARIO QUE REALIZA LA ACCIÓN
+        const nombreUsuario = req.jugador.nombre;
+        const rolUsuario = req.jugador.capitan ? "Admin" : "Jugador";
         // REGISTRAR HISTORIAL
         await historialRepository.registrarHistorial({
             accion: "MODIFICAR",
-            usuario: "Admin",
+             usuario: `${nombreUsuario} (${rolUsuario})`,
             usuarioAfectado: nombreJugador,
             entidad: "MULTAS_JUGADOR",
             idEntidad: multa.id,
-            resumen: `Admin ha registrado el pago de una multa de ${multa.importe} € al jugador ${nombreJugador}.`
+            resumen: `${nombreUsuario} (${rolUsuario}) ha registrado el pago de una multa de ${multa.importe} € al jugador ${nombreJugador}.`
         });
 
         return res.status(200).json({
@@ -263,7 +266,7 @@ const anularMulta = async (req, res) => {
                 mensaje: "No se puede anular una multa que ya está pagada"
             });
         }
-        
+
         if (!multa.activa) {
             return res.status(409).json({
                 ok: false,
@@ -291,7 +294,7 @@ const anularMulta = async (req, res) => {
 
 // OBTENER MULTAS
 const obtenerMultasFiltradas = async (req, res) => {
-    
+
     try {
         const { idTemporada, idJugador } = req.query;
 
